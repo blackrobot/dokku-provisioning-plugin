@@ -1,0 +1,11 @@
+#!/bin/bash
+APP="$1"; IMAGE="app/$APP"; NAME=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c 16)
+
+set -e
+
+ID=$(docker run -d $IMAGE /bin/bash -c "cat /app/provisioning/pre-deploy")
+if [ $(docker wait $ID) -eq 0 ]; then
+    echo "-----> Provisionning ..."
+    docker run -name=$NAME $IMAGE /bin/bash -c "/bin/bash /app/provisioning/pre-deploy"
+    docker commit $NAME $IMAGE > /dev/null
+fi
