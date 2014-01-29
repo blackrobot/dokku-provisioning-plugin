@@ -12,12 +12,13 @@ git clone https://github.com/Kloadut/dokku-provisioning-plugin /var/lib/dokku/pl
 Usage
 -----
 
-You hust have to add a bash script named `.provisioning` at the root of your app package. It will be executed on pre-release.
+You hust have to add a bash script named `provisioning/pre-build` at the root of your app package. It will be executed on pre-build.
 
 ```
 cd /path/to/my/app
-echo "chown -R www-data: /app" > .provisioning
-git add .provisioning
+mkdir provisioning
+echo "apt-get install package-name" > provisioning/pre-build
+git add provisioning
 git commit -m "Add provisioning script"
 git push dokku master
 ```
